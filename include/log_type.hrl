@@ -1,0 +1,152 @@
+-ifndef(__LOG_TYPE_HRL__).
+-define(__LOG_TYPE_HRL__, true).
+
+-define(FROM_SYSTEM,							10000).	%% 系统赠送获得
+-define(FROM_TOWN_OBJ_CANCEL_CONSTRUCT,			10001).	%% 城镇取消建造获得
+-define(FROM_TOWN_OBJ_CANCEL_UPGRADE,			10002).	%% 城镇取消升级建筑获得
+-define(FROM_TOWN_OBJ_UPGRADE,					10003).	%% 城镇升级建筑获得
+-define(FROM_USE_ITEM,							10004).	%% 使用物品获得
+-define(FROM_TAKE_OFF,							10005).	%% 脱下获得
+-define(FROM_CALL, 								10006). %% 召唤获得
+-define(FROM_LVUP,								10007). %% 佣兵升级获得
+-define(FROM_COMPOSE_ITEM,						10008).	%% 合成获得
+-define(FROM_SYSTEM_RECOVER,					10009).	%% 系统自动恢复
+-define(FROM_MYST_SHOP,							10010). %% 神秘商店购买活动
+-define(FROM_BUY_VIP_GIFT,						10011). %% 购买VIP礼包获得 
+-define(FROM_BUY_VIP_MONTH_CARD,				10012). %% 购买VIP月卡获得
+-define(FROM_JYUKAI_UNDERTOWN,					10013). %% 树海地下城探索获得
+-define(FROM_ACTIVITY_DAILY,					10014).	%% 日常活动获得
+-define(FROM_RECHARGE,							10015).	%% 储值获得
+-define(FROM_ACHIEVE,							10016).	%% 成就获得
+-define(FROM_ACHIEVE_GIFT,						10017).	%% 成就礼包兑换获得
+-define(FROM_TASK,								10018).	%% 任务获得
+-define(FROM_ARENA,								10019).	%% 竞技场获得
+-define(FROM_ARENA_REACH_RANK_AWARD,			10020).	%% 竞技场到达名次奖励获得
+-define(FROM_DUN_DROP,              			10021). %% 黑暗城副本掉落
+-define(FROM_DUN_PROGRESS_AWARD,				10022). %% 黑暗城章节进度奖励
+-define(FROM_ROLE_TRAIN,						10023).	%% 佣兵训练获得
+-define(FROM_ROLE_TRAIN_POTION,					10024).	%% 使用佣兵训练药水获得
+-define(FROM_SELL,								10025).	%% 出售获得
+-define(FROM_VIP_DAILY_GIFT,					10026). %% VIP每日奖励获得
+-define(FROM_RAND_DUN_DROP,     	    		10027). %% 随机副本掉落
+-define(FROM_AWARD_LOGIN_AWARD,					10028).	%% 登录奖励获得
+-define(FROM_TOWN,								10029).	%% 城镇建设获得
+-define(FROM_DUN_TRIAL_TOWER,					10030).	%% 试炼塔获得
+-define(FROM_DUN_TRIAL_MYST_TOWER,				10031).	%% 试炼神秘塔获得
+-define(FROM_GUILD_SHOP,						10032).	%% 公会商店获得
+-define(FROM_DUN_DARK_TOWER,					10033).	%% 黑暗塔获得
+-define(FROM_ROLE_LEVELUP,						10034).	%% 佣兵升级
+-define(FROM_TASK_BRANCH,						10035).	%% 支线任务获得
+-define(FROM_TOWN_MONSTER,						10036).	%% 城镇野外获得
+-define(FROM_GUILD_DONATION,					10037).	%% 公会捐献获得
+-define(FROM_EXCHANGE_SHOP,						10038). %% 兑换获得
+-define(FROM_ARENA_DAILY_RANK_AWARD,			10039).	%% 竞技场每日奖励获得
+-define(FROM_TASK_REWARD_COMPLETE_AWARD,		10040). %% 悬赏任务完成奖励获得
+-define(FROM_TASK_REWARD_RING_AWARD,			10041).	%% 悬赏任务单环奖励获得
+-define(FROM_EXCHANGE_GIFT_CODE,				10042).	%% 兑换激活码获得
+-define(FROM_PICTURE,							10043).	%% 兑换激活码获得
+-define(FROM_DUN_TRIAL_TOWER_RANK_AWARD,		10044). %% 试炼塔排名奖励获得
+-define(FROM_BUY_POWER,							10045).	%% 购买体力
+-define(FROM_DUN_FAILED,						10046).	%% 失败返还体力
+-define(FROM_VIP_MONTH_CARD,					10047).	%% VIP月卡获得
+-define(FROM_CLOCKIN,           				10048). %% 每日签到获得
+-define(FROM_REPLACE,							10049).	%% 置换获得
+-define(FROM_LEAD_LVUP,							10050).	%% 领主升级获得
+-define(FROM_ACTIVITY_TL_TOT_RECHARGE,			10051).	%% 限时活动*累储获得
+-define(FROM_ACTIVITY_TL_TOT_CONSUME,			10052).	%% 限时活动*累消获得
+-define(FROM_UP_STAR,							10053).	%% 佣兵升星
+-define(FROM_ACTIVITY_TL_SINGLE_RECHARGE,		10054).	%% 限时活动*单笔储值返利
+-define(FROM_ACTIVITY_TL_CHANNEL_RECHARGE,		10055).	%% 限时活动*渠道储值返利
+-define(FROM_ACTIVITY_TL_INVEST,				10056).	%% 限时活动*投资奖励获得
+-define(FROM_ACTIVITY_TL_DIAMOND_CALL_ROLE,		10057).	%% 限时活动*招募积分获得
+-define(FROM_AUTO_COMPOSE,						10060).	%% 自动合成活动
+-define(FROM_SHOP,                    			10061). %% 商城购买获得
+-define(FROM_FIRST_RECHARGE_AWARD,				10062).	%% 首储礼包获得
+-define(FROM_INVITE_CODE,						10063).	%% 邀请码奖励获得
+-define(FROM_MAIL,								10064). %% 领取邮件附件获得
+-define(FROM_SEVENDAY_AWARD,      				10065). %% 7天奖励
+-define(FROM_FB_INVITE_FRIENDS_AWARD,     		10066). %% fb邀请好友奖励
+-define(FROM_ACTIVITY_TL_COLLECT_REIKI,			10067). %% 限时活动*灵气兑换获得
+-define(FROM_ACTIVITY_TL_CATCH_ELVES,			10068). %% 限时活动*灵气兑换获得
+-define(FROM_PIG_DUN_DROP,						10069). %% 小猪快跑副本获得
+-define(FROM_WORLD_BOSS,						10070).	%% 世界boss获得
+-define(FROM_GROWUP_PACKAGE,					10071). %% 成长礼包
+-define(FROM_FRIEND_WISH_AWARD,					10072). %% 好友祝福奖励获得
+-define(FROM_MERCENARY_AWARD,        			10073). %% 雇佣兵奖励
+-define(FROM_GUILD_DUN,		        			10074). %% 公会副本获得
+-define(FROM_ACTIVITY_NEW_SERVER,				10075). %% 限时活动*开服7日活动获得
+-define(FROM_ACTIVITY_NEW_SERVER_SHOP,			10076).	%% 限时活动*开服7日活动商城获得
+-define(FROM_ACTIVITY_TL_LOGIN,					10077).	%% 限时活动*登录奖励获得
+-define(FROM_ACTIVITY_TL_CON_LOGIN,				10078).	%% 限时活动*连续登录奖励获得
+-define(FROM_TYPE_ACTIVITY_TL_RECHARGE_DIAMOND,	10079).	%% 限时活动*充值排行板获得
+-define(FROM_TYPE_ACTIVITY_TL_CONSUME_DIAMOND,	10080).	%% 限时活动*消耗排行板获得
+-define(FROM_TYPE_ACTIVITY_TL_CROSS_RECHARGE_DIAMOND, 10081).	%% 限时活动*跨服充值排行板获得
+-define(FROM_TYPE_ACTIVITY_TL_CROSS_CONSUME_DIAMOND, 10082).	%% 限时活动*跨服消耗排行板获得
+-define(FROM_TYPE_ACTIVITY_TL_CROSS_DAILY_RECHARGE_DIAMOND, 10083).	%% 限时活动*跨服每日充值排行板获得
+-define(FROM_TYPE_ACTIVITY_TL_CROSS_DAILY_CONSUME_DIAMOND, 10084).	%% 限时活动*跨服每日消耗排行板获得
+
+%% 增加类型请记得去util_config.erl加代码
+
+-define(FROM_GM,								19998). %% GM获得
+-define(FROM_CONSOLE,							19999). %% 程序手工获得（功能异常用）
+
+
+-define(USE_TOWN_OBJ_CONSTRUCT,					20000). %% 用于城镇建筑建造
+-define(USE_TOWN_OBJ_UPGRADE,					20001). %% 用于城镇建筑升级
+-define(USE_TOWN_OBJ_COMPLETE_CONSTRUCT,		20002).	%% 用于立刻完成城镇建筑建造
+-define(USE_TOWN_OBJ_COMPLETE_UPGRADE,			20003).	%% 用于立刻完成城镇建筑升级
+-define(USE_PUT_ON,								20004).	%% 用于穿上
+-define(USE_COMPOSE_ITEM,						20005).	%% 用于合成装备
+-define(USE_CALL, 								20006). %% 用于召唤
+-define(USE_LVUP,								20007). %% 用于佣兵升级
+-define(USE_MYST_SHOP_BUY_ITEM,					20008). %% 用于神秘商店购买	
+-define(USE_MYST_SHOP_REFRESH,					20009). %% 用于刷新神秘商店物品
+-define(USE_BUY_VIP_GIFT,						20010). %% 用于购买VIP礼包
+-define(USE_BUY_ARENA_TIMES,					20011). %% 用于购买竞技次数
+-define(USE_BUY_ROLE_TRAIN_POTION,				20012).	%% 用于购买佣兵训练药水
+-define(USE_ROLE_TRAIN_SLOT_OPEN,				20013).	%% 用于开通佣兵训练位
+-define(USE_DUN_BATTLE,               	    	20014). %% 用于黑暗城推图战斗
+-define(USE_DUN_BATTLES,               		  	20015). %% 用于推图扫荡
+-define(USE_STRONG_ITEM,						20016). %% 用于强化物品
+-define(USE_RAND_DUN_BATTLE,    	        	20017). %% 用于随机副本战斗
+-define(USE_UPGRADE_POTENTIAL,      	    	20018). %% 用于潜力提升
+-define(USE_UPGRADE_SKILL,              		20019). %% 用于升级技能
+-define(USE_GUILD_DONATION,                 	20020). %% 用于公会贡献
+-define(USE_DUN_TRIAL_TOWER_BUY_REVIVAL_TIMES,  20021). %% 用于购买试炼塔挑战次数
+-define(USE_DUN_TRIAL_MYST_TOWER,  				20022). %% 用于触发试炼神秘塔
+-define(USE_DUN_DARK_TOWER_BUY_REVIVAL_TIMES,	20023).	%% 用于购买黑暗塔佣兵复活次数
+-define(USE_DELETED_ITEM_BY_PLAYER,             20024). %%直接删除道具
+-define(USE_SELL_ITEM,                          20025). %%直接出售
+-define(USE_ACTIVE_SKILL,                       20026). %%装上技能
+-define(USE_DEACTIVE_SKILL,                     20027). %%装上技能
+-define(USE_EXCHANGE_SHOP,						20028). %%用于兑换
+-define(USE_TASK_REWARD_REFRESH,				20029). %%用于刷新悬赏任务
+-define(USE_TASK_REWARD_AUTO_COMPLETE,			20030). %%用于自动完成悬赏任务
+-define(USE_CREATE_GUILD,                   	20031). %% 用于创建公会
+-define(USE_UPGRADE_SKILLS,                   	20032). %% 用于升级技能
+-define(USE_BUY_POWER,		                   	20033). %% 用于体力购买
+-define(USE_TASK_REWARD_TOKEN,		            20034). %% 使用悬赏令牌
+-define(USE_REPLACE,				            20035). %% 用于置换
+-define(USE_USER_USE,							20036).	%% 用户直接使用
+-define(USE_AUTO_COMPOSE,						20037).	%% 用于自动合成
+-define(USE_BUY_WORKER,							20038).	%% 用于购买建筑工
+-define(USE_BUY_SHOP_ITEM,          			20039). %% 用于商城购买
+-define(USE_ACTIVITY_TL_INVEST,					20040).	%% 用于限时活动*投资
+-define(USE_REFRESH_RAND_DUNS,          		20041). %% 用于刷新随机副本
+-define(USE_CHANGE_NAME,          				20042). %% 用于刷新随机副本
+-define(USE_RAND_DUN_BATTLES,          20043). %% 用于扫荡随机副本
+-define(USE_CLEAR_ARENA_CD,		                20044). %% 用于清除竞技场CD
+-define(USE_BUY_BOSS,							20045).	%% 用于世界boss购买复活
+-define(USE_BUY_BOSS_BUFF,						20046).	%% 用于世界boss购买buff
+-define(USE_HIRE_MERCENARY,           20047). %% 用于雇佣雇佣兵战斗
+-define(USE_GODNESS_RELIVE,           20048). %% 用于守卫女神复活
+-define(USE_GODNESS_BUY_TIMES,			20049).	%% 用于守卫女神购买
+-define(USE_GODNESS_BUY_BUFF,			20050).	%% 用于购买女神祝福
+-define(USE_ACTIVITY_NEW_SERVER_SHOP,			20051).	%% 用于限时活动*开服7日活动商城购买
+-define(USE_RESET_DUN,							20052).	%% 用于副本重置
+
+%% 增加类型请记得去util_config.erl加代码
+
+-define(USE_CONSOLE,							29999). %% 用于程序手工回收（功能异常用）
+
+-endif.
