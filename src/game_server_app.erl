@@ -20,6 +20,7 @@ start(_Type, _Args) ->
 	]),
 	{ok, _} = cowboy:start_http(http, 100, [{port, 8088}],
 		[{env, [{dispatch, Dispatch}]}]),
+    ok = init_ets(),
 	game_server_sup:start_link().
 
 stop(_State) ->
@@ -45,3 +46,12 @@ start_all() ->
    %% application:start(cache),
    %% application:start(game_logger),
 	ok = application:start(game_server).
+
+
+
+%% @doc 注意这个函数会被重复调用,在这个地方创建的ets必须调用util:safe_create_ets，否则自己做对应的容错处理，绝对不能抛异常挂进程～～
+init_ets() ->
+    % util:safe_create_ets(ets_uid_pid, [set, named_table, public, {keypos, 1}]),
+
+    util:safe_create_ets(ets_uid,  [set, named_table, public, {keypos, 1}]),
+    ok.

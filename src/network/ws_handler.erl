@@ -8,9 +8,11 @@
 -export([websocket_terminate/3]).
 
 init({tcp, http}, _Req, _Opts) ->
+	io:format("init ~n"),
 	{upgrade, protocol, cowboy_websocket}.
 
 websocket_init(_TransportName, Req, _Opts) ->
+	io:format("websocket_init ~n"),
 	erlang:start_timer(1000, self(), <<"Hello!">>),
 	{ok, Req, undefined_state}.
 
@@ -26,4 +28,5 @@ websocket_info(_Info, Req, State) ->
 	{ok, Req, State}.
 
 websocket_terminate(_Reason, _Req, _State) ->
+	io:format("websocket_terminate ~n"),
 	ok.
