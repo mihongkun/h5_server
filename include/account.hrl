@@ -2,11 +2,12 @@
 -define(__ACCOUNT_HRL__, true).
 
 -record(account, {
-    id = 0,  %% 账号ID
+    sid = 0,  %% 账号ID
     server_id = 0,  %% 服务器ID
     platform_id = 0,  %% 平台ID
     account = "",  %% 平台账号
     level = 1,  %% 角色等级
+    vip = 0, %% 玩家vip等级
     exp = 0,    %% 领主经验
     type = 0,  %% 角色类型 0-普通玩家 1-新手指导员
     sex = 0,  %% 性别 1-男 2-女

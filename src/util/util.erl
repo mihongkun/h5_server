@@ -1,9 +1,25 @@
 -module(util).
 
--include("log.hrl").
+-include("common.hrl").
 -include("sys_macro.hrl").
 
 -compile(export_all).
+
+% 随机数相关
+-export([rand/2,		%% 产生一个介于Min到Max之间的随机整数
+		 rand_n/3,		%% 产生n个介于Min到Max之间的随机整数
+		 check_deno/1	%% 传入策划配置的万分数，检测是否命中
+		]).
+
+% 日期相关
+-export([
+			unixtime/0,			% 获取当前时间戳
+			today/0,			% 获取今天的日期 20180602 
+			check_other_day/1	% 传入时间戳，检查是否是今天
+		]).
+
+
+
 
 %% 产生一个介于Min到Max之间的随机整数,[Min, Max]
 rand(Min, Max) when is_float(Min) orelse is_float(Max) ->
@@ -14,34 +30,14 @@ rand(Min, Max) ->
     case get("rand_seed") of
         undefined ->
             RandSeed = g_rand:get_seed(),
-            random:seed(RandSeed),
+            rand:seed(exs1024s,RandSeed),
             put("rand_seed", RandSeed);
         _ -> skip
     end,
-    %% random:seed(erlang:now()),
     M = Min - 1,
-    random:uniform(Max - M) + M.
+    rand:uniform(Max - M) + M.
     
 % 从一个范围内随机取出N个数
-rand(Min, Max, N) ->
-	case Max - Min < N of
-	true ->
-		lists:seq(Min, Max);
-	false ->
-		rand(Min, Max, N, [])
-	end.
-	
-rand(_Min, _Max, 0, Res) ->
-	Res;
-rand(Min, Max, N, Res) ->
-	Val = rand(Min, Max),
-	case is_in_list(Res, Val) of
-	true ->
-		rand(Min, Max, N, Res);
-	false ->
-		rand(Min, Max, N - 1, [Val|Res])
-	end.
-
 rand_n(Min, Max, N) ->
 	List = lists:seq(Min, Max),
 	case Max - Min < N of
@@ -60,6 +56,10 @@ rand_n(List, N, Res, Len, Times) ->
 	Val = lists:nth(Num, List),
 	NewList = lists:delete(Val, List),
 	rand_n(NewList, N - 1, [Val|Res], Len-1, Times+1).
+
+
+check_deno(Deno)->
+	Deno > 0 andalso util:rand(1,10000) =< Deno.
 
 randomize(OrigList) ->
     Len = length(OrigList),
@@ -176,6 +176,9 @@ get_diff_day(Time1, Time2) ->
 			the_same_day  
 	end.
 
+
+
+
 %%根据Type宏定义在data文件取得对应的{H, M, S}，接着使用get_diff_day
 
 get_diff_day(Time1, Time2, NType) ->
@@ -211,12 +214,17 @@ is_in_list(List, Ele) ->
 	length(Res) > 0.
 
 unixtime() ->
-    {M, S, _} = erlang:now(),
+    {M, S, _} = os:timestamp(),
     M * 1000000 + S.
 
 longunixtime() ->
-    {M, S, Ms} = erlang:now(),
+    {M, S, Ms} = os:timestamp(),
     M * 1000000000 + S*1000 + Ms div 1000.
+
+today() ->
+	{Y,M,D} = erlang:date(),
+	Y*10000 + M*100 + D.
+
 
 get_timestamp() ->
 	get_timestamp({date(),time()}).
@@ -279,6 +287,7 @@ string_to_term(String) ->
         _Error ->
             undefined
     end.
+
 
 % erlang格式IP转换成二进制IP {192.168.24.203} => "192.168.24.203".
 change_ip_to_bitstring({A,B,C,D}) ->
@@ -439,54 +448,9 @@ safe_create_ets(Name,Args) ->
 		false
 	end.
 
-to_binary(A) when is_list(A)->
-	try list_to_binary(A)
-	catch _:_ ->
-		unicode:characters_to_binary(A)
-	end;
-
-to_binary(A) -> A.
 
 
-color_format(Fmt,Args) ->
-	Fun = fun(Arg) ->
-		case  is_list(Arg) andalso Arg /= [] andalso is_tuple(lists:nth(1,Arg)) == true of
-			true ->
-				Arg1 = term_to_string(Arg),
-				case application:get_env(lager, max_arg_length) of
-					{ok,MaxLength} ->
-						void;
-					_ ->
-						MaxLength = 10000
-				end,
-				case length(Arg1) > MaxLength of
-					true ->
-						{ArgS,_} = lists:split(MaxLength,Arg1),
-						Arg2 = ArgS++"......]";
-					false ->
-						Arg2 = Arg1
-				end,
-				lists:flatten(io_lib:format(color_fmt(Fmt),[Arg2]));
-			false ->
-				lists:flatten(io_lib:format(Fmt,[Arg]))
-		end		
-	end,
-	lists:map(Fun,Args).
 
-color_fmt(Fmt) ->
-	color_fmt(Fmt,"").
-	% Fmt.
-
-%% 112,119   115
-%% ~p,~w -> ~s
-color_fmt([],Fmt) ->
-	Fmt;
-color_fmt([A = 126|[B = 112|Res]],Fmt) ->
-	color_fmt(Res,Fmt++[A,115]);
-	color_fmt([A = 126|[B = 119|Res]],Fmt) ->
-	color_fmt(Res,Fmt++[A,115]);
-color_fmt([A|Res],Fmt) ->
-	color_fmt(Res,Fmt++[A]).
 
 day_of_the_week(UnixTime) when is_integer(UnixTime) ->
 	day_of_the_week(unixtime_to_datetime(UnixTime));
@@ -583,3 +547,89 @@ test() ->
 	unicode:characters_to_binary("6月1日 你妹啊")}.
 
 
+to_atom(Msg) when is_atom(Msg) -> 
+    Msg;
+to_atom(Msg) when is_binary(Msg) -> 
+	misc:list_to_atom(binary_to_list(Msg));
+to_atom(Msg) when is_integer(Msg) ->
+	misc:list_to_atom(integer_to_list(Msg));
+to_atom(Msg) when is_tuple(Msg) -> 
+	misc:list_to_atom(tuple_to_list(Msg));
+to_atom(Msg) when is_list(Msg) ->
+	Msg2 = list_to_binary(Msg),
+	Msg3 = binary_to_list(Msg2),
+    misc:list_to_atom(Msg3);
+to_atom(_) ->
+    misc:list_to_atom("").
+%% list_to_existing_atom
+list_to_atom(List)->
+	try 
+		erlang:list_to_existing_atom(List)
+	catch _:_ ->
+	 	erlang:list_to_atom(List)
+	end.
+
+%% 各种转换---list
+to_list(Msg) when is_list(Msg) -> 
+    Msg;
+to_list(Msg) when is_atom(Msg) -> 
+    atom_to_list(Msg);
+to_list(Msg) when is_binary(Msg) -> 
+    binary_to_list(Msg);
+to_list(Msg) when is_integer(Msg) -> 
+    integer_to_list(Msg);
+to_list(Msg) when is_tuple(Msg) ->
+	tuple_to_list(Msg);
+to_list(Msg) when is_float(Msg) -> 
+    float_to_list(Msg);
+to_list(Msg) when is_pid(Msg) -> 
+    pid_to_list(Msg);
+to_list(_) ->
+    [].
+%% 各种转换---binary
+to_binary(Msg) when is_binary(Msg) ->
+    Msg;
+to_binary(Msg) when is_atom(Msg) ->
+	list_to_binary(atom_to_list(Msg));
+to_binary(Msg) when is_list(Msg) -> 
+	try list_to_binary(Msg)
+	catch _:_ ->
+		unicode:characters_to_binary(Msg,utf8)
+	end;
+to_binary(Msg) when is_integer(Msg) -> 
+	list_to_binary(integer_to_list(Msg));
+to_binary(Msg) when is_tuple(Msg) ->
+	list_to_binary(tuple_to_list(Msg));
+to_binary(Msg) when is_float(Msg) ->
+	list_to_binary(float_to_list(Msg));
+to_binary(_Msg) ->
+    <<>>.
+%% 各种转换---float
+to_float(Msg) when is_float(Msg) ->
+    Msg;
+to_float(Msg) when is_integer(Msg) ->
+    Msg * 1.0;
+to_float(Msg)->
+	Msg2 = to_list(Msg),
+    try
+	   list_to_float(Msg2)
+    catch
+        _:_ ->
+            X = erlang:list_to_integer(Msg2),
+            X * 1.0
+    end.
+
+%% 各种转换---tuple
+to_tuple(T) when is_tuple(T) -> T;
+to_tuple(T) when is_list(T) ->
+	list_to_tuple(T);
+to_tuple(T) -> {T}.
+
+
+
+do_try(A) ->
+	case A of 
+		true -> true;
+		false -> throw(?break);
+		Else ->throw({do_try_unmatch,Else})
+	end.

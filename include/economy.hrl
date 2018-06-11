@@ -1,22 +1,25 @@
 -ifndef(__ECONOMY_HRL__).
 -define(__ECONOMY_HRL__, true).
 
+-include("common.hrl").
+-include("log_economy.hrl").
+-include("pt_economy.hrl").
+-include("pt_error.hrl").
+
+-define(ECONOMY_TYPE_DIAMOND,   1).   
+-define(ECONOMY_TYPE_GOLD,      2).   
+
 -record(economy, {
-    account_id = 0,  %% 账号ID
-    prosperity = 0,  %% 繁荣度
-    gold = 0,  %% 金币
-    diamond = 0,
-    power = 0,
-    power_time = 0,
-    achieve_point = 0,
-    honor_point = 0,
-    donation = 0,  %% 公会当前贡献度
-    max_donation = 0, %% 公会最大贡献度
-	wood = 0,
-    mine = 0,
-    reward_gold = 0,   %% 悬赏币
-    reward_token = 0,   %% 悬赏令牌
-    trial_point = 0
+    sid = 0,        %% 账号ID
+    diamond = 0,    %% 钻石
+    gold = 0,       %% 金币
+    soul = 0,       %% 英魂
+    water = 0,      %% 水滴
+    water_time = 0, %% 下次水滴恢复时间戳
+    stamen = 0,      %% 体力
+    stamen_time = 0, %% 下次体力恢复时间戳
+    narc = 0,      %% 紫水仙
+    narc_time = 0  %% 下次紫水仙恢复时间戳
     }).
 
 -endif.

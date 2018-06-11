@@ -28,10 +28,13 @@ start_link() ->
 
 init([]) ->
     {ok,SevID} = application:get_env(game_server, server_id),
-    StartIndex = 0,
+    StartIndex = SevID*100000+1,
     Procs = 
     [
-       ?CHILD(u_account,g_uid, worker, {account,io_lib:format("SELECT IFNULL(MAX(id), ~w) FROM gd_account",[StartIndex])})
+       ?CHILD(g_flow,worker),
+       ?CHILD(g_rand,worker),
+       ?CHILD(u_account,g_uid, worker, {account,io_lib:format("SELECT IFNULL(MAX(sid), ~w) FROM gd_account",[StartIndex])}),
+       ?CHILD(g_player,worker)
     ],
 
     {ok, {{one_for_one, 5, 10}, Procs}}.

@@ -5,7 +5,7 @@
 
 -include("log.hrl").
 
--export([get/1, lookup/1]).
+-export([get_uid/1, lookup/1]).
 
 -export([start_link/1]).
 -export([init/1, handle_call/3, terminate/2, code_change/3]).
@@ -41,7 +41,7 @@ init({Type,Sql}) ->
     % ets:insert(ets_uid_pid,{Type,self()}),
     {ok, Type}.
 
-get(Type) ->
+get_uid(Type) ->
     RegName = list_to_atom(atom_to_list(?MODULE) ++ "_" ++ atom_to_list(Type)),
     gen_server:call(RegName,get_uid).
     % [{Type,Pid}] = ets:lookup(ets_uid_pid,Type),
@@ -80,7 +80,7 @@ terminate(Reason, State) ->
             skip;
         [{State,Num}] ->
             UpdSql = io_lib:format("update g_uid set uid=~p WHERE type='~s'", [Num, atom_to_list(State)]),
-            ?DBG(g_uid, "UpdSql=~s", [UpdSql]),
+            ?DBG(g_uid, "UpdSql=~s", [unicode:characters_to_list(UpdSql)]),
             sql_operate:do_execute(UpdSql)
     end,
     ?DBG(g_uid, "~p terminating, Reason = ~p", [?MODULE, Reason]),
